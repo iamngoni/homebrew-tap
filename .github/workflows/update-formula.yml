@@ -22,10 +22,10 @@ jobs:
           # Download SHA256 files using gh CLI (handles auth)
           gh release download "${VERSION}" --repo iamngoni/bitbucket-cli --pattern "*.sha256" --dir /tmp/sha256
 
-          DARWIN_ARM_SHA=$(grep bb-darwin-aarch64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
-          DARWIN_X64_SHA=$(grep bb-darwin-x86_64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
-          LINUX_ARM_SHA=$(grep bb-linux-aarch64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
-          LINUX_X64_SHA=$(grep bb-linux-x86_64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
+          DARWIN_ARM_SHA=$(awk '{print $1}' /tmp/sha256/bb-darwin-aarch64.tar.gz.sha256)
+          DARWIN_X64_SHA=$(awk '{print $1}' /tmp/sha256/bb-darwin-x86_64.tar.gz.sha256)
+          LINUX_ARM_SHA=$(awk '{print $1}' /tmp/sha256/bb-linux-aarch64.tar.gz.sha256)
+          LINUX_X64_SHA=$(awk '{print $1}' /tmp/sha256/bb-linux-x86_64.tar.gz.sha256)
 
           mkdir -p Formula
           BASE_URL="https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}"
