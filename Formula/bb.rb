@@ -7,22 +7,22 @@ class Bb < Formula
   on_macos do
     on_arm do
       url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-darwin-aarch64.tar.gz"
-      sha256 "f05e5f501a6386982b0afde89ec5e03e736cf4085076017958f1663d132e3101"
+      sha256 "32facff8951cebac722ea7dc50ebb575104047dd4aa55ac0066eae8081a862b9"
     end
     on_intel do
       url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-darwin-x86_64.tar.gz"
-      sha256 "3a239c89ee0df2c4599de59a99d5e1f9d357978d9eefd5e45591cccd41937a71"
+      sha256 "c5b9e248e49dbe87c182820c6393ace81e556b85d8e6f383983c2c4aa03f3572"
     end
   end
 
   on_linux do
     on_arm do
       url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-linux-aarch64.tar.gz"
-      sha256 "7d186da029509a64ed4a83b3f18a2d3c0846fa15bc9d667958c612336619c046"
+      sha256 "baa14cc6a4ed77e77d095d507605cbceb3f0432461deaf6bf6dd362ceae4ec82"
     end
     on_intel do
       url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-linux-x86_64.tar.gz"
-      sha256 "67c999c521044b9ed5a79fa6d38111e34da03f77868c471e32de6c4636779e30"
+      sha256 "c5c97f18c463a8111ad84e69a7c5dc5c833248ede1f83dceea73ce093bf08dde"
     end
   end
 
