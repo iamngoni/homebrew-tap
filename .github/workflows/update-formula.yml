@@ -1,0 +1,81 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update formula
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          VERSION_NUM=${VERSION#v}
+
+          # Download SHA256 checksums
+          BASE_URL="https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}"
+
+          DARWIN_ARM_SHA=$(curl -sL "${BASE_URL}/bb-darwin-aarch64.tar.gz.sha256" | awk '{print $1}')
+          DARWIN_X64_SHA=$(curl -sL "${BASE_URL}/bb-darwin-x86_64.tar.gz.sha256" | awk '{print $1}')
+          LINUX_ARM_SHA=$(curl -sL "${BASE_URL}/bb-linux-aarch64.tar.gz.sha256" | awk '{print $1}')
+          LINUX_X64_SHA=$(curl -sL "${BASE_URL}/bb-linux-x86_64.tar.gz.sha256" | awk '{print $1}')
+
+          # Generate formula
+          cat > Formula/bb.rb << EOF
+          class Bb < Formula
+            desc "Modern CLI for Bitbucket Cloud and Server/Data Center"
+            homepage "https://github.com/iamngoni/bitbucket-cli"
+            version "${VERSION_NUM}"
+            license "MIT"
+
+            on_macos do
+              on_arm do
+                url "https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}/bb-darwin-aarch64.tar.gz"
+                sha256 "${DARWIN_ARM_SHA}"
+              end
+              on_intel do
+                url "https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}/bb-darwin-x86_64.tar.gz"
+                sha256 "${DARWIN_X64_SHA}"
+              end
+            end
+
+            on_linux do
+              on_arm do
+                url "https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}/bb-linux-aarch64.tar.gz"
+                sha256 "${LINUX_ARM_SHA}"
+              end
+              on_intel do
+                url "https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}/bb-linux-x86_64.tar.gz"
+                sha256 "${LINUX_X64_SHA}"
+              end
+            end
+
+            def install
+              if OS.mac? && Hardware::CPU.arm?
+                bin.install "bb-darwin-aarch64" => "bb"
+              elsif OS.mac? && Hardware::CPU.intel?
+                bin.install "bb-darwin-x86_64" => "bb"
+              elsif OS.linux? && Hardware::CPU.arm?
+                bin.install "bb-linux-aarch64" => "bb"
+              elsif OS.linux? && Hardware::CPU.intel?
+                bin.install "bb-linux-x86_64" => "bb"
+              end
+            end
+
+            test do
+              system "#{bin}/bb", "--version"
+            end
+          end
+          EOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/bb.rb
+          git commit -m "Update bb to ${{ github.event.client_payload.version }}"
+          git push
