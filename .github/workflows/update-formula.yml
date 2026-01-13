@@ -15,16 +15,20 @@ jobs:
       - name: Update formula
         env:
           VERSION: ${{ github.event.client_payload.version }}
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: |
           VERSION_NUM=${VERSION#v}
-          BASE_URL="https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}"
 
-          DARWIN_ARM_SHA=$(curl -sL "${BASE_URL}/bb-darwin-aarch64.tar.gz.sha256" | awk '{print $1}')
-          DARWIN_X64_SHA=$(curl -sL "${BASE_URL}/bb-darwin-x86_64.tar.gz.sha256" | awk '{print $1}')
-          LINUX_ARM_SHA=$(curl -sL "${BASE_URL}/bb-linux-aarch64.tar.gz.sha256" | awk '{print $1}')
-          LINUX_X64_SHA=$(curl -sL "${BASE_URL}/bb-linux-x86_64.tar.gz.sha256" | awk '{print $1}')
+          # Download SHA256 files using gh CLI (handles auth)
+          gh release download "${VERSION}" --repo iamngoni/bitbucket-cli --pattern "*.sha256" --dir /tmp/sha256
+
+          DARWIN_ARM_SHA=$(grep bb-darwin-aarch64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
+          DARWIN_X64_SHA=$(grep bb-darwin-x86_64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
+          LINUX_ARM_SHA=$(grep bb-linux-aarch64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
+          LINUX_X64_SHA=$(grep bb-linux-x86_64.tar.gz /tmp/sha256/*.sha256 | awk '{print $1}')
 
           mkdir -p Formula
+          BASE_URL="https://github.com/iamngoni/bitbucket-cli/releases/download/${VERSION}"
 
           cat > Formula/bb.rb << EOF
           class Bb < Formula
@@ -75,6 +79,9 @@ jobs:
 
           # Remove leading spaces from heredoc
           sed -i 's/^          //' Formula/bb.rb
+
+          echo "Generated formula:"
+          cat Formula/bb.rb
 
       - name: Commit and push
         run: |
