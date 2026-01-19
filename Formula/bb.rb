@@ -1,28 +1,28 @@
 class Bb < Formula
   desc "Modern CLI for Bitbucket Cloud and Server/Data Center"
   homepage "https://github.com/iamngoni/bitbucket-cli"
-  version "0.1.0"
+  version "0.2.0"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-darwin-aarch64.tar.gz"
-      sha256 "732c2838bbfd90c3c5207ac1ab719cf64568bc63c2ded2062fd9be6254f3a12f"
+      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.2.0/bb-darwin-aarch64.tar.gz"
+      sha256 "b7d7bc0943579c74393afd01365de210fef4e622d81f04a3ba39b51e5031dd60"
     end
     on_intel do
-      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-darwin-x86_64.tar.gz"
-      sha256 "abde84033cec6621d9c0513019e2d484242a79b8b39fd28a6ffb84604c12f048"
+      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.2.0/bb-darwin-x86_64.tar.gz"
+      sha256 "1d6c2b376b269ac2250332672355100c779ba62205dbf5cfde8debdc612d79f0"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-linux-aarch64.tar.gz"
-      sha256 "b090894fd86c13688e1b664e40dd59d21acd7f6eabafc8e4ba7f10569e960b42"
+      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.2.0/bb-linux-aarch64.tar.gz"
+      sha256 "089ce42fbf6f259979e7d2cb7f4a7cb75d85a7118dc7c9714cba40baacee7b2d"
     end
     on_intel do
-      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.1.0/bb-linux-x86_64.tar.gz"
-      sha256 "e449746196cbe65eb60b7df48887b2f4fead339d8c597b6c78fe26b277ae26a9"
+      url "https://github.com/iamngoni/bitbucket-cli/releases/download/v0.2.0/bb-linux-x86_64.tar.gz"
+      sha256 "a0dbb3498cd1506d1d8c762fa07f8b94d2f480a8ed89c92b24fb709bcf6f0379"
     end
   end
 
